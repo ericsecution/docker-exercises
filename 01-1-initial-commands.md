@@ -4,6 +4,16 @@
 *additional notes and commentary made by me, Eric Mangin, to provide extra details on things that may be of interest or helpful to anyone else as we learn how to navigate Docker together* 🙂👍
 
 ## Exercise 01-1.1: Docker Images
+note:
+- Docker **images** are immutable and so also referred to as snapshots. An **image** contains the definitions of all the libraries, binaries, configuration files, etc. that one would require to run the application. Images are read-only.
+- **Containers**, on the other hand (which we'll get into more later on), are instances of these images.
+
+🤔
+- For me (even though it's not the same thing), I'm reminded of when I learned about a **Class** vs an **Object** in Java: where the object is an instance of the class, which is more like a "blueprint" of the object.
+
+🧐
+
+Alright, well, before we get too confused by going back and forth from a birdseye view, let's zoom-in and get into some specifics.
 
 Command:
 ```bash
@@ -43,7 +53,7 @@ addt'l note:
 
 <br />
 
-## Exercise 01-1.2: Docker Pull
+## Exercise 01-1.2: Image Grab - docker pull
 
 I already have the 'alpine' image (i.e. a minimal Docker image from Alpine Linux), that I've practiced on before, and seems like a fairly common image for many people to start out with, but just going to pull again for good measure. Feel free to compare Outputs.
 
@@ -129,3 +139,125 @@ Hello from Docker
 
 <br />
 
+# Managing The Lifecycle
+
+## Exercise 01-1.4: Listing Docker Containers
+
+- this command: `docker ps` is used to list all running Docker containers
+- use `docker ps -a` to see all containers (not just the running ones)
+
+<br />
+
+Command: 
+```bash
+docker ps
+```
+
+Output:
+```lua
+└─[$]> docker ps                                 
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+```
+Command:
+```bash
+docker ps -a
+```
+
+Output:
+```lua
+└─[$]> docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS                      PORTS     NAMES
+7c959a0534ef   alpine    "echo 'Hello from Do…"   About a minute ago   Exited (0) 36 seconds ago             flamboyant_lichterman
+c399022e7140   alpine    "echo 'Hello from Do…"   5 minutes ago  ago   Exited (0) 5 minutes ago              condescending_agnesi
+c099fc3de34c   alpine    "/bin/echo 'Hello fr…"   10 minutes ago       Exited (0) 10 minutes ago             vibrant_chatterjee
+11613d857e2a   alpine    "/bin/echo 'Hello fr…"   1 hour ago           Exited (0) 1 hour ago                 happy_mcnulty
+```
+<br />
+
+note:
+- When a Docker container is created you can use the `--name <container_name>` flag
+- however, if none is provided [Docker provides a name for you](https://agarwalrounak.medium.com/default-container-names-in-docker-15bdbf56b539) *(link to Rounak Agarwal's Medium article)* 
+- using this particular [names-generator_test.go](https://github.com/docker/docker-ce/blob/master/components/engine/pkg/namesgenerator/names-generator.go) written in Go *(link to GitHub Repo)*.
+
+**Docker Docs 🔗**
+
+- When using **[docker ps](https://docs.docker.com/engine/reference/commandline/ps/)**, you can add a `--filter` tag and a `--format` option to gain even greater control over the results.
+
+<br />
+
+Here's an example (from the Docker Docs) of both `--format` and `--filter`:
+
+- first identifying the id of the network 'net1':
+
+```lua
+docker network inspect --format "{{.ID}}" net1
+
+8c0b4110ae930dbe26b258de9bc34a03f98056ed6f27f991d32919bfe401d7c5
+```
+
+- and then taking that id, and using it as a filter:
+```lua
+docker ps --filter network=8c0b4110ae930dbe26b258de9bc34a03f98056ed6f27f991d32919bfe401d7c5
+
+CONTAINER ID        IMAGE       COMMAND       CREATED             STATUS              PORTS               NAMES
+9d4893ed80fe        ubuntu      "top"         10 minutes ago      Up 10 minutes                           test1
+```
+<br />
+
+---
+## Exercise 01-1.5: Stopping Docker Containers
+
+- `docker stop` is used to stop a running Docker container
+- you can specify the container that you want to stop by using its ID.
+
+<br />
+
+Command: 
+```bash
+docker stop <container_id>
+```
+
+Output:
+```bash
+└─[$]> docker stop 7c959a0534ef
+7c959a0534ef
+```
+<br />
+
+note:
+
+- Not a lot of action yet, because we haven't really started running any substantial images just yet.
+
+- A good command to put into your toolbag, nevertheless.
+
+- You don't want to be like me, leaving my snowboarding group lesson (for beginners) shortly after it started, thinking, "Easy. I got this!" ... and then realizing out there on the "black diamond" (▪️🔷) trail that (oops) I didn't know how to stop 💥🏂
+
+- So yeah, never a bad idea to learn how to **stop** at the beginning.
+
+<br />
+
+**Docker Docs 🔗**
+- You can read more about `docker stop`, as well as sending a `--signal`... 
+- or waiting a number of seconds by using the `--time` flag...
+- when you want to **stop** your container(s) from running **[here in the Docker Docs](https://docs.docker.com/engine/reference/commandline/stop/)**.
+
+---
+## Exercise 01-1.6: Removing Docker Containers
+
+- `docker rm` is used to remove Docker containers. You can only remove a Docker container if it's not running, so you may need to stop it first using `docker stop`
+
+- you can specify the container that you want to stop by using its ID.
+
+<br />
+
+Command: 
+```bash
+docker rm <container_id>
+```
+
+Output:
+```bash
+└─[$]> docker rm 7c959a0534ef
+7c959a0534ef
+```
+<br />
