@@ -43,7 +43,7 @@ addt'l note:
 
 <br />
 
-## Exercise 01-1.2: Docker Images
+## Exercise 01-1.2: Docker Pull
 
 I already have the 'alpine' image (i.e. a minimal Docker image from Alpine Linux), that I've practiced on before, and seems like a fairly common image for many people to start out with, but just going to pull again for good measure. Feel free to compare Outputs.
 
