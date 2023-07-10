@@ -1,4 +1,4 @@
-# Docker Basics
+# Docker Basics - Initial Commands
 <br />
 
 *additional notes and commentary made by me, Eric Mangin, to provide extra details on things that may be of interest or helpful to anyone else as we learn how to navigate Docker together* 🙂👍
@@ -261,3 +261,68 @@ Output:
 7c959a0534ef
 ```
 <br />
+
+### Using These Commands in Practice
+
+We can also run an Alpine container that will just sit idle.
+
+Command:
+
+```bash
+docker run -d alpine tail -f /dev/null
+```
+
+This command will run a new container in detached mode (`-d`) from the `alpine` image, and will execute the command tail `-f /dev/null` which does nothing but keep the container running.
+
+Ouput:
+
+```lua
+└─[$]> docker run -d alpine tail -f /dev/null
+3ace535e152648b5042e2d6f0da6be7f6a7dbe028d44121e97df5c17d96b5fab
+```
+<br />
+
+- Now, if you run **`docker ps`**, you should see the newly created container in the list of running containers.
+
+    Output:
+
+```lua
+    └─[$]> docker ps
+CONTAINER ID   IMAGE     COMMAND               CREATED          STATUS          PORTS     NAMES
+3ace535e1526   alpine    "tail -f /dev/null"   53 seconds ago   Up 52 seconds             naughty_feynman
+```
+
+<br />
+
+- If you want to stop the container, you can do so by running **`docker stop`** followed by the *container ID*.
+
+    *(took a few seconds)* Ouput:
+
+```lua
+└─[$]> docker stop 3ace535e1526
+3ace535e1526
+```
+
+- Finally, you can remove the stopped container by using **`docker rm`** followed by the *container ID*.
+
+    Output:
+
+```lua
+└─[$]> docker rm 3ace535e1526                   
+3ace535e1526
+```
+
+So, now (again), running **`docker ps`** ...
+
+Output:
+
+```lua
+└─[$]> docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+```
+
+<br />
+
+*end of Docker Basics - Initial Commands*
+
+---
